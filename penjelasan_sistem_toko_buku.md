@@ -389,6 +389,13 @@ int main()
     default:
       cout << "Menu tidak valid!\n";
     }
+    if (pilihan != 0)
+    {
+      cout << "\nTekan Enter untuk kembali ke menu utama...";
+      cin.ignore();
+      cin.get();
+      system("cls"); // Bersihkan layar setelah user menekan Enter
+    }
   } while (pilihan != 0);
   return 0;
 }
@@ -410,8 +417,8 @@ Fungsi `main` adalah titik awal eksekusi program dan berfungsi sebagai pengendal
   - 0: Keluar dari program
 - Untuk menu urutkan judul, pengguna akan diminta memilih urutan A-Z (ascending) atau Z-A (descending) sebelum proses pengurutan dilakukan.
 - Untuk menu urutkan harga, pengguna akan diminta memilih urutan harga terkecil-terbesar (ascending) atau terbesar-terkecil (descending) sebelum proses pengurutan dilakukan.
-- Setelah proses pengurutan, daftar buku yang sudah diurutkan akan langsung ditampilkan ke layar.
+- Setelah proses pengurutan atau aksi lain, program akan menampilkan pesan hasil dan meminta pengguna menekan Enter sebelum kembali ke menu utama. Setelah itu, layar akan dibersihkan agar tampilan menu tetap rapi.
 - Jika input menu tidak valid, program menampilkan pesan "Menu tidak valid!" dan kembali ke menu utama.
 - Setelah memilih keluar, program menampilkan pesan "Terima kasih!" sebagai penutup.
 
-Dengan struktur ini, seluruh fitur manajemen toko buku dapat diakses dengan mudah dan terintegrasi dalam satu alur program utama, sehingga pengguna dapat melakukan berbagai operasi secara interaktif dan berulang tanpa perlu menjalankan ulang program. Fitur pengurutan yang fleksibel memudahkan pengguna menampilkan data sesuai kebutuhan.
+Dengan struktur ini, seluruh fitur manajemen toko buku dapat diakses dengan mudah dan terintegrasi dalam satu alur program utama, sehingga pengguna dapat melakukan berbagai operasi secara interaktif dan berulang tanpa perlu menjalankan ulang program. Fitur pengurutan yang fleksibel dan tampilan menu yang selalu rapi memudahkan pengguna menampilkan data sesuai kebutuhan.

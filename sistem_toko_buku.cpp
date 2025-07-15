@@ -264,6 +264,13 @@ int main()
     default:
       cout << "Menu tidak valid!\n";
     }
+    if (pilihan != 0)
+    {
+      cout << "\nTekan Enter untuk kembali ke menu utama...";
+      cin.ignore();
+      cin.get();
+      system("cls"); // Bersihkan layar setelah user menekan Enter
+    }
   } while (pilihan != 0);
   return 0;
 }
