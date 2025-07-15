@@ -169,13 +169,14 @@ void cariBuku(Buku *bukuArr, int jml)
 }
 
 // Fungsi pengurutan buku berdasarkan judul (bubble sort manual)
-void urutkanBukuJudul(Buku *bukuArr, int jml)
+void urutkanBukuJudul(Buku *bukuArr, int jml, bool ascending)
 {
   for (int i = 0; i < jml - 1; i++)
   {
     for (int j = 0; j < jml - i - 1; j++)
     {
-      if (strcmp(bukuArr[j].judul, bukuArr[j + 1].judul) > 0)
+      int cmp = strcmp(bukuArr[j].judul, bukuArr[j + 1].judul);
+      if ((ascending && cmp > 0) || (!ascending && cmp < 0))
       {
         Buku temp = bukuArr[j];
         bukuArr[j] = bukuArr[j + 1];
@@ -187,13 +188,13 @@ void urutkanBukuJudul(Buku *bukuArr, int jml)
 }
 
 // Fungsi pengurutan buku berdasarkan harga (bubble sort manual)
-void urutkanBukuHarga(Buku *bukuArr, int jml)
+void urutkanBukuHarga(Buku *bukuArr, int jml, bool ascending)
 {
   for (int i = 0; i < jml - 1; i++)
   {
     for (int j = 0; j < jml - i - 1; j++)
     {
-      if (bukuArr[j].harga > bukuArr[j + 1].harga)
+      if ((ascending && bukuArr[j].harga > bukuArr[j + 1].harga) || (!ascending && bukuArr[j].harga < bukuArr[j + 1].harga))
       {
         Buku temp = bukuArr[j];
         bukuArr[j] = bukuArr[j + 1];
@@ -238,11 +239,25 @@ int main()
       cariBuku(daftarBuku, jumlahBuku);
       break;
     case 6:
-      urutkanBukuJudul(daftarBuku, jumlahBuku);
+    {
+      int urut;
+      cout << "\nUrutkan Judul:\n1. A-Z\n2. Z-A\nPilih: ";
+      cin >> urut;
+      bool ascending = (urut == 1);
+      urutkanBukuJudul(daftarBuku, jumlahBuku, ascending);
+      tampilkanBuku(daftarBuku, jumlahBuku);
       break;
+    }
     case 7:
-      urutkanBukuHarga(daftarBuku, jumlahBuku);
+    {
+      int urut;
+      cout << "\nUrutkan Harga:\n1. Terkecil-Terbesar\n2. Terbesar-Terkecil\nPilih: ";
+      cin >> urut;
+      bool ascending = (urut == 1);
+      urutkanBukuHarga(daftarBuku, jumlahBuku, ascending);
+      tampilkanBuku(daftarBuku, jumlahBuku);
       break;
+    }
     case 0:
       cout << "Terima kasih!\n";
       break;

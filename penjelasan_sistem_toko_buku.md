@@ -267,13 +267,14 @@ Dengan cara ini, pencarian data buku menjadi fleksibel dan mudah, baik berdasark
 ### Fungsi Urutkan Buku Berdasarkan Judul
 
 ```cpp
-void urutkanBukuJudul(Buku *bukuArr, int jml)
+void urutkanBukuJudul(Buku *bukuArr, int jml, bool ascending)
 {
   for (int i = 0; i < jml - 1; i++)
   {
     for (int j = 0; j < jml - i - 1; j++)
     {
-      if (strcmp(bukuArr[j].judul, bukuArr[j + 1].judul) > 0)
+      int cmp = strcmp(bukuArr[j].judul, bukuArr[j + 1].judul);
+      if ((ascending && cmp > 0) || (!ascending && cmp < 0))
       {
         Buku temp = bukuArr[j];
         bukuArr[j] = bukuArr[j + 1];
@@ -285,25 +286,26 @@ void urutkanBukuJudul(Buku *bukuArr, int jml)
 }
 ```
 
-Fungsi ini digunakan untuk mengurutkan data buku berdasarkan judul secara alfabetis menggunakan algoritma bubble sort pada array. Berikut penjelasan detail setiap langkahnya:
+Fungsi ini digunakan untuk mengurutkan data buku berdasarkan judul secara alfabetis menggunakan algoritma bubble sort pada array. Kini, fungsi ini menerima parameter tambahan `ascending` untuk menentukan arah pengurutan:
 
-- Algoritma bubble sort bekerja dengan membandingkan dua elemen array yang bersebelahan, yaitu judul buku pada indeks saat ini dan indeks berikutnya menggunakan fungsi `strcmp`. Jika urutan judul salah (lebih besar secara alfabet), data pada kedua elemen ditukar.
-- Penukaran dilakukan pada isi data array (`Buku temp = bukuArr[j]; ...`) bukan pada pointer, sehingga struktur array tetap utuh dan tidak perlu mengubah referensi.
-- Proses ini diulang terus (dua loop bersarang) hingga tidak ada lagi data yang perlu ditukar, artinya seluruh data sudah terurut.
+- Jika `ascending` bernilai `true`, data diurutkan dari A ke Z (A-Z).
+- Jika `ascending` bernilai `false`, data diurutkan dari Z ke A (Z-A).
+- Perbandingan menggunakan `strcmp`, dan penukaran data dilakukan jika urutan tidak sesuai dengan pilihan pengguna.
+- Proses ini diulang hingga seluruh data terurut sesuai keinginan.
 - Setelah proses selesai, program menampilkan pesan konfirmasi.
 
-Dengan cara ini, tampilan daftar buku menjadi lebih rapi dan memudahkan pencarian manual berdasarkan urutan judul.
+Dengan fitur ini, pengguna dapat memilih urutan judul buku sesuai kebutuhan, baik dari A-Z maupun Z-A.
 
 ### Fungsi Urutkan Buku Berdasarkan Harga
 
 ```cpp
-void urutkanBukuHarga(Buku *bukuArr, int jml)
+void urutkanBukuHarga(Buku *bukuArr, int jml, bool ascending)
 {
   for (int i = 0; i < jml - 1; i++)
   {
     for (int j = 0; j < jml - i - 1; j++)
     {
-      if (bukuArr[j].harga > bukuArr[j + 1].harga)
+      if ((ascending && bukuArr[j].harga > bukuArr[j + 1].harga) || (!ascending && bukuArr[j].harga < bukuArr[j + 1].harga))
       {
         Buku temp = bukuArr[j];
         bukuArr[j] = bukuArr[j + 1];
@@ -315,14 +317,15 @@ void urutkanBukuHarga(Buku *bukuArr, int jml)
 }
 ```
 
-Fungsi ini digunakan untuk mengurutkan data buku berdasarkan harga dari yang termurah ke yang termahal menggunakan algoritma bubble sort pada array. Berikut penjelasan detail setiap langkahnya:
+Fungsi ini digunakan untuk mengurutkan data buku berdasarkan harga menggunakan algoritma bubble sort pada array. Kini, fungsi ini menerima parameter tambahan `ascending` untuk menentukan arah pengurutan:
 
-- Algoritma bubble sort bekerja dengan membandingkan dua elemen array yang bersebelahan, yaitu harga buku pada indeks saat ini dan indeks berikutnya. Jika harga pada indeks saat ini lebih besar, data pada kedua elemen ditukar.
-- Penukaran dilakukan pada isi data array (`Buku temp = bukuArr[j]; ...`) bukan pada pointer, sehingga struktur array tetap utuh dan tidak perlu mengubah referensi.
-- Proses ini diulang terus (dua loop bersarang) hingga tidak ada lagi data yang perlu ditukar, artinya seluruh data sudah terurut dari harga terendah ke tertinggi.
+- Jika `ascending` bernilai `true`, data diurutkan dari harga terkecil ke terbesar.
+- Jika `ascending` bernilai `false`, data diurutkan dari harga terbesar ke terkecil.
+- Penukaran data dilakukan jika urutan tidak sesuai dengan pilihan pengguna.
+- Proses ini diulang hingga seluruh data terurut sesuai keinginan.
 - Setelah proses selesai, program menampilkan pesan konfirmasi.
 
-Dengan pengurutan ini, pengguna dapat dengan mudah melihat daftar buku dari harga terendah hingga tertinggi, sehingga memudahkan pencarian manual atau analisis harga buku di toko.
+Dengan fitur ini, pengguna dapat memilih urutan harga buku sesuai kebutuhan, baik dari harga terkecil ke terbesar maupun sebaliknya.
 
 ### Fungsi Utama Program
 
@@ -361,11 +364,25 @@ int main()
       cariBuku(daftarBuku, jumlahBuku);
       break;
     case 6:
-      urutkanBukuJudul(daftarBuku, jumlahBuku);
+    {
+      int urut;
+      cout << "\nUrutkan Judul:\n1. A-Z\n2. Z-A\nPilih: ";
+      cin >> urut;
+      bool ascending = (urut == 1);
+      urutkanBukuJudul(daftarBuku, jumlahBuku, ascending);
+      tampilkanBuku(daftarBuku, jumlahBuku);
       break;
+    }
     case 7:
-      urutkanBukuHarga(daftarBuku, jumlahBuku);
+    {
+      int urut;
+      cout << "\nUrutkan Harga:\n1. Terkecil-Terbesar\n2. Terbesar-Terkecil\nPilih: ";
+      cin >> urut;
+      bool ascending = (urut == 1);
+      urutkanBukuHarga(daftarBuku, jumlahBuku, ascending);
+      tampilkanBuku(daftarBuku, jumlahBuku);
       break;
+    }
     case 0:
       cout << "Terima kasih!\n";
       break;
@@ -388,10 +405,13 @@ Fungsi `main` adalah titik awal eksekusi program dan berfungsi sebagai pengendal
   - 3: Mengubah data buku
   - 4: Menghapus data buku
   - 5: Mencari data buku
-  - 6: Mengurutkan buku berdasarkan judul
-  - 7: Mengurutkan buku berdasarkan harga
+  - 6: Mengurutkan buku berdasarkan judul (dengan pilihan urutan A-Z atau Z-A, pengguna akan diminta memilih sebelum proses pengurutan)
+  - 7: Mengurutkan buku berdasarkan harga (dengan pilihan urutan dari harga terkecil ke terbesar atau sebaliknya, pengguna akan diminta memilih sebelum proses pengurutan)
   - 0: Keluar dari program
+- Untuk menu urutkan judul, pengguna akan diminta memilih urutan A-Z (ascending) atau Z-A (descending) sebelum proses pengurutan dilakukan.
+- Untuk menu urutkan harga, pengguna akan diminta memilih urutan harga terkecil-terbesar (ascending) atau terbesar-terkecil (descending) sebelum proses pengurutan dilakukan.
+- Setelah proses pengurutan, daftar buku yang sudah diurutkan akan langsung ditampilkan ke layar.
 - Jika input menu tidak valid, program menampilkan pesan "Menu tidak valid!" dan kembali ke menu utama.
 - Setelah memilih keluar, program menampilkan pesan "Terima kasih!" sebagai penutup.
 
-Dengan struktur ini, seluruh fitur manajemen toko buku dapat diakses dengan mudah dan terintegrasi dalam satu alur program utama, sehingga pengguna dapat melakukan berbagai operasi secara interaktif dan berulang tanpa perlu menjalankan ulang program.
+Dengan struktur ini, seluruh fitur manajemen toko buku dapat diakses dengan mudah dan terintegrasi dalam satu alur program utama, sehingga pengguna dapat melakukan berbagai operasi secara interaktif dan berulang tanpa perlu menjalankan ulang program. Fitur pengurutan yang fleksibel memudahkan pengguna menampilkan data sesuai kebutuhan.
