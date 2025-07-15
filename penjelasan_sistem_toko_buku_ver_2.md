@@ -42,8 +42,7 @@ void tambahBuku() {
 }
 ```
 
-- Membuat node baru, mengisi data, dan menambahkannya di akhir linked list.
-- **new Node**: Mengalokasikan memori dinamis untuk node baru.
+Fungsi ini digunakan untuk menambah data buku baru ke dalam sistem. Prosesnya dimulai dengan membuat node baru menggunakan `new Node`, yang berarti memori dialokasikan secara dinamis sehingga jumlah data tidak terbatas selama memori komputer cukup. Data buku diinput satu per satu oleh pengguna, lalu node baru dihubungkan ke akhir daftar (linked list). Jika daftar masih kosong (`head` masih `nullptr`), node baru langsung menjadi head. Jika sudah ada data, program akan menelusuri node sampai ke node terakhir, lalu menambahkan node baru di ujung. Dengan cara ini, penambahan data tidak memerlukan penggeseran data lain seperti pada array.
 
 ### Fungsi Tampilkan Buku
 
@@ -58,7 +57,7 @@ void tampilkanBuku() {
 }
 ```
 
-- Menelusuri seluruh node dari head dan menampilkan data buku satu per satu.
+Fungsi ini bertugas menampilkan seluruh data buku yang tersimpan di sistem. Program akan mulai dari node pertama (`head`) dan menelusuri satu per satu node hingga akhir (sampai `p` menjadi `nullptr`). Setiap data buku dicetak ke layar dengan format yang rapi menggunakan fungsi-fungsi formatting seperti `setw` dan `left`. Penomoran dilakukan dengan variabel `no` yang bertambah setiap kali data buku ditampilkan. Dengan linked list, penelusuran data dilakukan dengan mengikuti pointer `next` dari satu node ke node berikutnya.
 
 ### Fungsi Ubah Buku
 
@@ -76,8 +75,7 @@ void ubahBuku() {
 }
 ```
 
-- Mencari node dengan kode buku tertentu, lalu mengubah datanya.
-- **strcmp**: Membandingkan string kode buku.
+Fungsi ini digunakan untuk mengubah data buku yang sudah ada. Pengguna diminta memasukkan kode buku yang ingin diubah. Program kemudian menelusuri seluruh node dari head, membandingkan kode buku pada setiap node dengan kode yang dicari menggunakan fungsi `strcmp`. Jika ditemukan, data lama ditampilkan dan pengguna diminta memasukkan data baru untuk menggantikan data lama. Proses pengubahan hanya mengubah isi data pada node yang ditemukan, tanpa mengubah struktur linked list. Jika kode buku tidak ditemukan, program akan menampilkan pesan bahwa data tidak ditemukan.
 
 ### Fungsi Hapus Buku
 
@@ -98,8 +96,7 @@ void hapusBuku() {
 }
 ```
 
-- Mencari node yang ingin dihapus, mengatur pointer agar node tersebut dilewati, lalu menghapus memori node.
-- **delete p**: Menghapus node dari memori.
+Fungsi ini digunakan untuk menghapus data buku dari sistem. Pengguna memasukkan kode buku yang ingin dihapus, lalu program menelusuri node satu per satu. Jika node yang dicari adalah node pertama (`prev == nullptr`), maka head dipindahkan ke node berikutnya. Jika node berada di tengah atau akhir, pointer node sebelumnya (`prev`) diatur agar langsung menunjuk ke node setelah node yang dihapus. Setelah pointer diatur, node yang dihapus dibebaskan dari memori dengan `delete p`. Dengan linked list, penghapusan data menjadi sangat efisien karena tidak perlu menggeser data lain.
 
 ### Fungsi Cari Buku
 
@@ -114,8 +111,7 @@ void cariBuku() {
 }
 ```
 
-- Menelusuri node untuk mencari buku berdasarkan judul atau kode.
-- **strstr**: Mencari substring pada judul.
+Fungsi ini memungkinkan pengguna mencari data buku berdasarkan judul atau kode. Setelah memilih mode pencarian, program akan menelusuri seluruh node dari head. Jika pencarian berdasarkan judul, program menggunakan fungsi `strstr` untuk mencari substring judul yang diinput pengguna pada setiap node. Jika pencarian berdasarkan kode, program menggunakan `strcmp` untuk membandingkan kode buku. Jika ditemukan, data buku akan ditampilkan. Jika tidak ditemukan, program akan memberi tahu pengguna. Fungsi ini sangat berguna untuk menemukan data dengan cepat tanpa harus menelusuri seluruh daftar secara manual.
 
 ### Fungsi Urutkan Buku
 
@@ -138,8 +134,7 @@ void urutkanBukuJudul() {
 }
 ```
 
-- Mengurutkan data buku berdasarkan judul dengan bubble sort pada linked list.
-- **Bubble sort**: Menukar data antar node, bukan node-nya.
+Fungsi ini digunakan untuk mengurutkan data buku berdasarkan judul secara alfabetis menggunakan algoritma bubble sort pada linked list. Prosesnya adalah dengan menelusuri node satu per satu dan membandingkan judul buku pada node saat ini dengan node berikutnya menggunakan `strcmp`. Jika urutan salah, data pada kedua node ditukar. Proses ini diulang terus hingga tidak ada lagi data yang perlu ditukar (data sudah terurut). Penukaran dilakukan pada isi data node, bukan node-nya, agar struktur linked list tetap utuh. Dengan pengurutan ini, tampilan daftar buku menjadi lebih rapi dan memudahkan pencarian manual.
 
 ## Penjelasan Detail untuk Orang Awam
 
