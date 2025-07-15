@@ -29,16 +29,33 @@ Node *head = nullptr;
 ### Fungsi Tambah Buku
 
 ```cpp
-void tambahBuku() {
+void tambahBuku()
+{
   Node *baru = new Node;
-  // ...input data buku...
+  cout << "\nMasukkan kode buku: ";
+  cin >> baru->data.kode;
+  cout << "Masukkan judul buku: ";
+  cin.ignore();
+  cin.getline(baru->data.judul, 50);
+  cout << "Masukkan penulis: ";
+  cin.getline(baru->data.penulis, 30);
+  cout << "Masukkan harga: ";
+  cin >> baru->data.harga;
+  cout << "Masukkan stok: ";
+  cin >> baru->data.stok;
   baru->next = nullptr;
-  if (!head) head = baru;
-  else {
+  if (!head)
+  {
+    head = baru;
+  }
+  else
+  {
     Node *p = head;
-    while (p->next) p = p->next;
+    while (p->next)
+      p = p->next;
     p->next = baru;
   }
+  cout << "\nBuku berhasil ditambahkan!\n";
 }
 ```
 
@@ -47,13 +64,32 @@ Fungsi ini digunakan untuk menambah data buku baru ke dalam sistem. Prosesnya di
 ### Fungsi Tampilkan Buku
 
 ```cpp
-void tampilkanBuku() {
+void tampilkanBuku()
+{
+  cout << "\nDaftar Buku:\n";
+  cout << setfill('-') << setw(85) << "" << setfill(' ') << endl;
+  cout << left
+       << setw(4) << "No"
+       << setw(10) << "Kode"
+       << setw(25) << "Judul"
+       << setw(20) << "Penulis"
+       << setw(12) << "Harga"
+       << setw(8) << "Stok" << endl;
+  cout << setfill('-') << setw(85) << "" << setfill(' ') << endl;
   int no = 1;
   Node *p = head;
-  while (p) {
-    // ...cetak data buku...
+  while (p)
+  {
+    cout << left
+         << setw(4) << no++
+         << setw(10) << p->data.kode
+         << setw(25) << p->data.judul
+         << setw(20) << p->data.penulis
+         << setw(12) << p->data.harga
+         << setw(8) << p->data.stok << endl;
     p = p->next;
   }
+  cout << setfill('-') << setw(85) << "" << setfill(' ') << endl;
 }
 ```
 
@@ -62,16 +98,34 @@ Fungsi ini bertugas menampilkan seluruh data buku yang tersimpan di sistem. Prog
 ### Fungsi Ubah Buku
 
 ```cpp
-void ubahBuku() {
+void ubahBuku()
+{
   char kodeCari[10];
+  cout << "\nMasukkan kode buku yang ingin diubah: ";
+  cin >> kodeCari;
   Node *p = head;
-  while (p) {
-    if (strcmp(p->data.kode, kodeCari) == 0) {
-      // ...ubah data buku...
+  while (p)
+  {
+    if (strcmp(p->data.kode, kodeCari) == 0)
+    {
+      cout << "Data lama:\n";
+      cout << "Judul: " << p->data.judul << "\nPenulis: " << p->data.penulis << "\nHarga: " << p->data.harga << "\nStok: " << p->data.stok << endl;
+      cout << "Masukkan data baru:\n";
+      cout << "Judul: ";
+      cin.ignore();
+      cin.getline(p->data.judul, 50);
+      cout << "Penulis: ";
+      cin.getline(p->data.penulis, 30);
+      cout << "Harga: ";
+      cin >> p->data.harga;
+      cout << "Stok: ";
+      cin >> p->data.stok;
+      cout << "\nData buku berhasil diubah!\n";
       return;
     }
     p = p->next;
   }
+  cout << "Buku dengan kode tersebut tidak ditemukan!\n";
 }
 ```
 
@@ -80,19 +134,32 @@ Fungsi ini digunakan untuk mengubah data buku yang sudah ada. Pengguna diminta m
 ### Fungsi Hapus Buku
 
 ```cpp
-void hapusBuku() {
+void hapusBuku()
+{
   char kodeCari[10];
+  cout << "\nMasukkan kode buku yang ingin dihapus: ";
+  cin >> kodeCari;
   Node *p = head, *prev = nullptr;
-  while (p) {
-    if (strcmp(p->data.kode, kodeCari) == 0) {
-      if (prev == nullptr) head = p->next;
-      else prev->next = p->next;
+  while (p)
+  {
+    if (strcmp(p->data.kode, kodeCari) == 0)
+    {
+      if (prev == nullptr)
+      {
+        head = p->next;
+      }
+      else
+      {
+        prev->next = p->next;
+      }
       delete p;
+      cout << "Buku berhasil dihapus!\n";
       return;
     }
     prev = p;
     p = p->next;
   }
+  cout << "Buku dengan kode tersebut tidak ditemukan!\n";
 }
 ```
 
@@ -101,12 +168,53 @@ Fungsi ini digunakan untuk menghapus data buku dari sistem. Pengguna memasukkan 
 ### Fungsi Cari Buku
 
 ```cpp
-void cariBuku() {
-  // ...pilihan cari judul/kode...
-  Node *p = head;
-  while (p) {
-    // ...cek judul/kode...
-    p = p->next;
+void cariBuku()
+{
+  int mode;
+  cout << "\nCari berdasarkan:\n1. Judul\n2. Kode\nPilih: ";
+  cin >> mode;
+  cin.ignore();
+  if (mode == 1)
+  {
+    char judulCari[50];
+    cout << "Masukkan judul buku: ";
+    cin.getline(judulCari, 50);
+    bool ditemukan = false;
+    Node *p = head;
+    while (p)
+    {
+      if (strstr(p->data.judul, judulCari))
+      {
+        cout << "Kode: " << p->data.kode << ", Judul: " << p->data.judul << ", Penulis: " << p->data.penulis << ", Harga: " << p->data.harga << ", Stok: " << p->data.stok << endl;
+        ditemukan = true;
+      }
+      p = p->next;
+    }
+    if (!ditemukan)
+      cout << "Buku tidak ditemukan!\n";
+  }
+  else if (mode == 2)
+  {
+    char kodeCari[10];
+    cout << "Masukkan kode buku: ";
+    cin.getline(kodeCari, 10);
+    bool ditemukan = false;
+    Node *p = head;
+    while (p)
+    {
+      if (strcmp(p->data.kode, kodeCari) == 0)
+      {
+        cout << "Kode: " << p->data.kode << ", Judul: " << p->data.judul << ", Penulis: " << p->data.penulis << ", Harga: " << p->data.harga << ", Stok: " << p->data.stok << endl;
+        ditemukan = true;
+      }
+      p = p->next;
+    }
+    if (!ditemukan)
+      cout << "Buku tidak ditemukan!\n";
+  }
+  else
+  {
+    cout << "Pilihan tidak valid!\n";
   }
 }
 ```
@@ -116,13 +224,23 @@ Fungsi ini memungkinkan pengguna mencari data buku berdasarkan judul atau kode. 
 ### Fungsi Urutkan Buku
 
 ```cpp
-void urutkanBukuJudul() {
+void urutkanBukuJudul()
+{
   // Bubble sort manual pada linked list
-  do {
+  if (!head || !head->next)
+  {
+    cout << "Daftar buku berhasil diurutkan berdasarkan judul!\n";
+    return;
+  }
+  bool swapped;
+  do
+  {
     swapped = false;
     Node *p = head;
-    while (p->next) {
-      if (strcmp(p->data.judul, p->next->data.judul) > 0) {
+    while (p->next)
+    {
+      if (strcmp(p->data.judul, p->next->data.judul) > 0)
+      {
         Buku temp = p->data;
         p->data = p->next->data;
         p->next->data = temp;
@@ -131,6 +249,7 @@ void urutkanBukuJudul() {
       p = p->next;
     }
   } while (swapped);
+  cout << "Daftar buku berhasil diurutkan berdasarkan judul!\n";
 }
 ```
 
@@ -139,18 +258,23 @@ Fungsi ini digunakan untuk mengurutkan data buku berdasarkan judul secara alfabe
 ### Fungsi Urutkan Buku Berdasarkan Harga
 
 ```cpp
-void urutkanBukuHarga() {
+void urutkanBukuHarga()
+{
   // Bubble sort manual pada linked list
-  if (!head || !head->next) {
+  if (!head || !head->next)
+  {
     cout << "Daftar buku berhasil diurutkan berdasarkan harga!\n";
     return;
   }
   bool swapped;
-  do {
+  do
+  {
     swapped = false;
     Node *p = head;
-    while (p->next) {
-      if (p->data.harga > p->next->data.harga) {
+    while (p->next)
+    {
+      if (p->data.harga > p->next->data.harga)
+      {
         Buku temp = p->data;
         p->data = p->next->data;
         p->next->data = temp;
