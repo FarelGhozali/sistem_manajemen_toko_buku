@@ -136,7 +136,36 @@ void urutkanBukuJudul() {
 
 Fungsi ini digunakan untuk mengurutkan data buku berdasarkan judul secara alfabetis menggunakan algoritma bubble sort pada linked list. Prosesnya adalah dengan menelusuri node satu per satu dan membandingkan judul buku pada node saat ini dengan node berikutnya menggunakan `strcmp`. Jika urutan salah, data pada kedua node ditukar. Proses ini diulang terus hingga tidak ada lagi data yang perlu ditukar (data sudah terurut). Penukaran dilakukan pada isi data node, bukan node-nya, agar struktur linked list tetap utuh. Dengan pengurutan ini, tampilan daftar buku menjadi lebih rapi dan memudahkan pencarian manual.
 
-## Penjelasan Detail untuk Orang Awam
+### Fungsi Urutkan Buku Berdasarkan Harga
+
+```cpp
+void urutkanBukuHarga() {
+  // Bubble sort manual pada linked list
+  if (!head || !head->next) {
+    cout << "Daftar buku berhasil diurutkan berdasarkan harga!\n";
+    return;
+  }
+  bool swapped;
+  do {
+    swapped = false;
+    Node *p = head;
+    while (p->next) {
+      if (p->data.harga > p->next->data.harga) {
+        Buku temp = p->data;
+        p->data = p->next->data;
+        p->next->data = temp;
+        swapped = true;
+      }
+      p = p->next;
+    }
+  } while (swapped);
+  cout << "Daftar buku berhasil diurutkan berdasarkan harga!\n";
+}
+```
+
+Fungsi ini digunakan untuk mengurutkan data buku berdasarkan harga dari yang termurah ke yang termahal menggunakan algoritma bubble sort pada linked list. Prosesnya mirip dengan pengurutan judul, yaitu dengan menelusuri node satu per satu dan membandingkan harga buku pada node saat ini dengan node berikutnya. Jika urutan harga salah, data pada kedua node ditukar. Proses ini diulang hingga seluruh data buku terurut berdasarkan harga. Dengan pengurutan ini, pengguna dapat dengan mudah melihat daftar buku dari harga terendah hingga tertinggi.
+
+## Penjelasan Konsep dan Fitur
 
 - **Node dan Linked List**: Setiap buku disimpan dalam node yang saling terhubung. Linked list memudahkan penambahan dan penghapusan data tanpa perlu menggeser seluruh data seperti pada array.
 - **Pointer**: Digunakan untuk menunjuk ke node berikutnya. `head` adalah awal dari daftar buku.
