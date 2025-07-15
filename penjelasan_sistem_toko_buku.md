@@ -4,14 +4,23 @@ Sistem Manajemen Toko Buku versi 1 menggunakan array statis untuk menyimpan data
 
 ## Highlight dan Penjelasan Kode
 
-### Struktur Data
+### Library yang Digunakan
 
 ```cpp
 #include <iostream>
 #include <iomanip>
 #include <cstring>
 using namespace std;
+```
 
+- **`#include <iostream>`**: Library standar C++ untuk operasi input/output seperti `cin` (input dari keyboard) dan `cout` (output ke layar). Digunakan di seluruh bagian program untuk interaksi dengan pengguna.
+- **`#include <iomanip>`**: Library untuk manipulasi format output, seperti `setw` (lebar kolom), `setfill` (karakter pengisi), dan `left` (rata kiri). Sangat berguna untuk membuat tampilan tabel data buku yang rapi dan mudah dibaca.
+- **`#include <cstring>`**: Library untuk operasi string berbasis karakter, seperti `strcmp` (membandingkan dua string), `strstr` (mencari substring dalam string), dan `cin.getline` (membaca string dengan spasi). Library ini penting untuk pencarian, pengurutan, dan input data buku yang berupa teks.
+- **`using namespace std;`**: Agar tidak perlu menulis `std::` di depan fungsi-fungsi dari library standar, sehingga kode lebih ringkas dan mudah dibaca.
+
+### Struktur Data
+
+```cpp
 struct Buku
 {
   char kode[10];
@@ -26,9 +35,18 @@ Buku daftarBuku[MAKS_BUKU];
 int jumlahBuku = 0;
 ```
 
-- **Array `daftarBuku`**: Menyimpan data buku secara berurutan, dengan kapasitas maksimal 100 buku.
-- **Variabel `jumlahBuku`**: Menyimpan jumlah data buku yang sudah diinput.
-- **Struct Buku**: Menyimpan data satu buku, terdiri dari kode, judul, penulis, harga, dan stok.
+Bagian ini mendefinisikan struktur data utama yang digunakan dalam program:
+
+- **Array `daftarBuku`**: Merupakan array statis bertipe `Buku` yang digunakan untuk menyimpan seluruh data buku secara berurutan. Kapasitas maksimal ditentukan oleh `MAKS_BUKU` (100), sehingga program cocok untuk data berukuran kecil hingga sedang. Penggunaan array memudahkan akses data dengan indeks, namun jika data dihapus, elemen setelahnya harus digeser agar tidak ada celah kosong.
+- **Variabel `jumlahBuku`**: Menyimpan jumlah data buku yang sudah diinput. Variabel ini digunakan untuk menentukan posisi penambahan data baru dan batas penelusuran data saat menampilkan, mengubah, atau menghapus buku.
+- **Struct Buku**: Merupakan struktur yang mendefinisikan satu data buku, terdiri dari beberapa field:
+  - `kode[10]`: Menyimpan kode unik buku, digunakan sebagai kunci pencarian dan identifikasi.
+  - `judul[50]`: Menyimpan judul buku, dapat berisi spasi dan karakter panjang.
+  - `penulis[30]`: Menyimpan nama penulis buku.
+  - `harga`: Menyimpan harga buku dalam satuan integer.
+  - `stok`: Menyimpan jumlah stok buku yang tersedia.
+
+Penggunaan array dan struct ini membuat pengelolaan data menjadi terstruktur dan mudah diakses, namun kapasitasnya tetap terbatas oleh ukuran array. Untuk data yang sangat besar atau dinamis, struktur lain seperti linked list lebih disarankan.
 
 ### Fungsi Tambah Buku
 
