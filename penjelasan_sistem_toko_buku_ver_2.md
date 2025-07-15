@@ -7,7 +7,14 @@ Sistem Manajemen Toko Buku versi 2 ini menggunakan struktur data linked list unt
 ### Struktur Data
 
 ```cpp
-struct Buku {
+#include <iostream>
+#include <iomanip>
+#include <cstring>
+using namespace std;
+
+// Struktur data buku
+struct Buku
+{
   char kode[10];
   char judul[50];
   char penulis[30];
@@ -15,16 +22,23 @@ struct Buku {
   int stok;
 };
 
-struct Node {
+// Node untuk linked list
+struct Node
+{
   Buku data;
   Node *next;
 };
+
 Node *head = nullptr;
 ```
 
-- **Buku**: Menyimpan informasi satu buku.
-- **Node**: Membungkus data buku dan pointer ke node berikutnya.
-- **head**: Pointer ke node pertama (awal linked list).
+- **Library `<iostream>`**: Digunakan untuk operasi input/output seperti `cin` dan `cout`.
+- **Library `<iomanip>`**: Digunakan untuk formatting tampilan, misal `setw`, `setfill`, dan `left` agar output tabel rapi.
+- **Library `<cstring>`**: Menyediakan fungsi manipulasi string seperti `strcmp` dan `strstr` untuk membandingkan dan mencari string.
+- **using namespace std**: Agar tidak perlu menulis `std::` di depan fungsi/fitur dari library standar C++.
+- **struct Buku**: Menyimpan data satu buku, terdiri dari kode, judul, penulis, harga, dan stok.
+- **struct Node**: Membungkus data buku dan pointer ke node berikutnya, membentuk rantai linked list.
+- **Node \*head**: Pointer global yang menunjuk ke node pertama pada linked list. Jika `head` bernilai `nullptr`, berarti daftar buku masih kosong.
 
 ### Fungsi Tambah Buku
 
@@ -59,7 +73,16 @@ void tambahBuku()
 }
 ```
 
-Fungsi ini digunakan untuk menambah data buku baru ke dalam sistem. Prosesnya dimulai dengan membuat node baru menggunakan `new Node`, yang berarti memori dialokasikan secara dinamis sehingga jumlah data tidak terbatas selama memori komputer cukup. Data buku diinput satu per satu oleh pengguna, lalu node baru dihubungkan ke akhir daftar (linked list). Jika daftar masih kosong (`head` masih `nullptr`), node baru langsung menjadi head. Jika sudah ada data, program akan menelusuri node sampai ke node terakhir, lalu menambahkan node baru di ujung. Dengan cara ini, penambahan data tidak memerlukan penggeseran data lain seperti pada array.
+Fungsi ini digunakan untuk menambah data buku baru ke dalam sistem. Prosesnya dimulai dengan membuat node baru menggunakan `new Node`, yang berarti memori dialokasikan secara dinamis sehingga jumlah data tidak terbatas selama memori komputer cukup. Data buku diinput satu per satu oleh pengguna melalui beberapa tahap:
+
+- `cin >> baru->data.kode;` digunakan untuk input kode buku. Karena `cin` hanya membaca sampai spasi, maka setelahnya perlu `cin.ignore();` agar buffer input bersih sebelum membaca string berikutnya.
+- `cin.getline(baru->data.judul, 50);` dan `cin.getline(baru->data.penulis, 30);` digunakan untuk membaca judul dan penulis yang bisa mengandung spasi. Fungsi `getline` membaca seluruh baris hingga batas karakter yang ditentukan.
+- Input harga dan stok menggunakan `cin` karena berupa angka.
+- Setelah data diisi, pointer `next` pada node baru di-set ke `nullptr` karena node ini akan menjadi node terakhir.
+- Jika linked list masih kosong (`head == nullptr`), node baru langsung menjadi head. Jika sudah ada data, program menelusuri node sampai ke node terakhir, lalu menambahkan node baru di ujung dengan mengatur pointer `next` pada node terakhir.
+- Pesan "Buku berhasil ditambahkan!" ditampilkan sebagai konfirmasi.
+
+Dengan cara ini, penambahan data tidak memerlukan penggeseran data lain seperti pada array, dan data baru langsung terhubung di akhir daftar.
 
 ### Fungsi Tampilkan Buku
 
@@ -93,7 +116,17 @@ void tampilkanBuku()
 }
 ```
 
-Fungsi ini bertugas menampilkan seluruh data buku yang tersimpan di sistem. Program akan mulai dari node pertama (`head`) dan menelusuri satu per satu node hingga akhir (sampai `p` menjadi `nullptr`). Setiap data buku dicetak ke layar dengan format yang rapi menggunakan fungsi-fungsi formatting seperti `setw` dan `left`. Penomoran dilakukan dengan variabel `no` yang bertambah setiap kali data buku ditampilkan. Dengan linked list, penelusuran data dilakukan dengan mengikuti pointer `next` dari satu node ke node berikutnya.
+Fungsi ini digunakan untuk menampilkan seluruh data buku yang tersimpan di sistem dalam bentuk tabel yang rapi. Berikut penjelasan detail setiap bagian:
+
+- Baris judul dan garis pembatas dibuat menggunakan `setfill('-')` dan `setw(85)` agar tampilan tabel konsisten dan mudah dibaca.
+- `left` digunakan agar data rata kiri di setiap kolom.
+- `setw` menentukan lebar kolom, sehingga data buku tidak saling bertabrakan dan tetap rapi.
+- Penomoran otomatis dilakukan dengan variabel `no` yang bertambah setiap kali data buku ditampilkan.
+- Penelusuran data dilakukan dengan pointer `p` yang dimulai dari `head` dan bergerak ke node berikutnya (`p = p->next`) hingga seluruh data ditampilkan.
+- Setiap data buku (kode, judul, penulis, harga, stok) dicetak sesuai urutan dan format kolom.
+- Setelah semua data ditampilkan, garis pembatas akhir dicetak agar tabel terlihat jelas.
+
+Dengan cara ini, seluruh data buku dapat dilihat dengan mudah dan terstruktur, meskipun jumlah data bertambah banyak.
 
 ### Fungsi Ubah Buku
 
@@ -129,7 +162,17 @@ void ubahBuku()
 }
 ```
 
-Fungsi ini digunakan untuk mengubah data buku yang sudah ada. Pengguna diminta memasukkan kode buku yang ingin diubah. Program kemudian menelusuri seluruh node dari head, membandingkan kode buku pada setiap node dengan kode yang dicari menggunakan fungsi `strcmp`. Jika ditemukan, data lama ditampilkan dan pengguna diminta memasukkan data baru untuk menggantikan data lama. Proses pengubahan hanya mengubah isi data pada node yang ditemukan, tanpa mengubah struktur linked list. Jika kode buku tidak ditemukan, program akan menampilkan pesan bahwa data tidak ditemukan.
+Fungsi ini digunakan untuk mengubah data buku yang sudah ada. Berikut penjelasan detail setiap langkahnya:
+
+- Pengguna diminta memasukkan kode buku yang ingin diubah. Kode ini akan digunakan sebagai kunci pencarian.
+- Program menelusuri seluruh node dari head menggunakan pointer `p`. Pada setiap node, kode buku dibandingkan dengan kode yang dicari menggunakan fungsi `strcmp`. Fungsi ini membandingkan dua string dan mengembalikan 0 jika sama.
+- Jika ditemukan, data lama buku ditampilkan agar pengguna bisa melihat informasi sebelum diubah.
+- Pengguna diminta memasukkan data baru untuk judul, penulis, harga, dan stok. Untuk input judul dan penulis, digunakan `cin.ignore()` agar buffer input bersih, lalu `cin.getline()` untuk membaca string yang bisa mengandung spasi.
+- Data baru langsung menggantikan data lama pada node yang ditemukan. Tidak ada perubahan pada struktur linked list, hanya isi data yang diupdate.
+- Setelah data diubah, program menampilkan pesan konfirmasi.
+- Jika kode buku tidak ditemukan setelah seluruh node ditelusuri, program menampilkan pesan bahwa data tidak ditemukan.
+
+Dengan cara ini, proses pengubahan data menjadi mudah dan langsung pada node yang sesuai tanpa perlu memindahkan data lain.
 
 ### Fungsi Hapus Buku
 
@@ -163,7 +206,18 @@ void hapusBuku()
 }
 ```
 
-Fungsi ini digunakan untuk menghapus data buku dari sistem. Pengguna memasukkan kode buku yang ingin dihapus, lalu program menelusuri node satu per satu. Jika node yang dicari adalah node pertama (`prev == nullptr`), maka head dipindahkan ke node berikutnya. Jika node berada di tengah atau akhir, pointer node sebelumnya (`prev`) diatur agar langsung menunjuk ke node setelah node yang dihapus. Setelah pointer diatur, node yang dihapus dibebaskan dari memori dengan `delete p`. Dengan linked list, penghapusan data menjadi sangat efisien karena tidak perlu menggeser data lain.
+Fungsi ini digunakan untuk menghapus data buku dari sistem. Berikut penjelasan detail setiap langkahnya:
+
+- Pengguna memasukkan kode buku yang ingin dihapus. Kode ini digunakan sebagai kunci pencarian.
+- Program menelusuri seluruh node dari head menggunakan pointer `p` dan pointer sebelumnya `prev`.
+- Pada setiap node, kode buku dibandingkan dengan kode yang dicari menggunakan fungsi `strcmp`. Jika sama, node tersebut akan dihapus.
+- Jika node yang ditemukan adalah node pertama (`prev == nullptr`), maka head dipindahkan ke node berikutnya (`head = p->next`).
+- Jika node berada di tengah atau akhir, pointer node sebelumnya (`prev->next`) diatur agar langsung menunjuk ke node setelah node yang dihapus (`prev->next = p->next`).
+- Node yang dihapus dibebaskan dari memori dengan `delete p` agar tidak terjadi memory leak.
+- Setelah penghapusan, program menampilkan pesan konfirmasi.
+- Jika kode buku tidak ditemukan setelah seluruh node ditelusuri, program menampilkan pesan bahwa data tidak ditemukan.
+
+Dengan cara ini, penghapusan data pada linked list menjadi efisien dan tidak memerlukan penggeseran data lain seperti pada array. Pointer diatur agar rantai linked list tetap utuh setelah node dihapus.
 
 ### Fungsi Cari Buku
 
@@ -219,7 +273,16 @@ void cariBuku()
 }
 ```
 
-Fungsi ini memungkinkan pengguna mencari data buku berdasarkan judul atau kode. Setelah memilih mode pencarian, program akan menelusuri seluruh node dari head. Jika pencarian berdasarkan judul, program menggunakan fungsi `strstr` untuk mencari substring judul yang diinput pengguna pada setiap node. Jika pencarian berdasarkan kode, program menggunakan `strcmp` untuk membandingkan kode buku. Jika ditemukan, data buku akan ditampilkan. Jika tidak ditemukan, program akan memberi tahu pengguna. Fungsi ini sangat berguna untuk menemukan data dengan cepat tanpa harus menelusuri seluruh daftar secara manual.
+Fungsi ini digunakan untuk mencari data buku berdasarkan judul atau kode. Berikut penjelasan detail setiap langkahnya:
+
+- Pengguna memilih mode pencarian: 1 untuk judul, 2 untuk kode.
+- Untuk pencarian judul, pengguna memasukkan kata kunci judul. Program menelusuri seluruh node dan menggunakan fungsi `strstr` untuk mencari substring pada judul buku. Jika ditemukan, data buku ditampilkan. Fungsi `strstr` berguna untuk pencarian sebagian kata, bukan harus persis sama.
+- Untuk pencarian kode, pengguna memasukkan kode buku. Program menelusuri seluruh node dan menggunakan fungsi `strcmp` untuk membandingkan kode buku secara persis. Jika ditemukan, data buku ditampilkan.
+- Pada kedua mode, variabel `ditemukan` digunakan untuk menandai apakah ada data yang cocok. Jika tidak ditemukan, program menampilkan pesan "Buku tidak ditemukan!".
+- Input menggunakan `cin.ignore()` dan `cin.getline()` agar pembacaan string berjalan lancar dan tidak terganggu sisa input sebelumnya.
+- Jika mode pencarian tidak valid, program menampilkan pesan "Pilihan tidak valid!".
+
+Dengan cara ini, pencarian data buku menjadi fleksibel dan mudah, baik berdasarkan judul (sebagian kata) maupun kode (persis sama).
 
 ### Fungsi Urutkan Buku
 
@@ -253,7 +316,16 @@ void urutkanBukuJudul()
 }
 ```
 
-Fungsi ini digunakan untuk mengurutkan data buku berdasarkan judul secara alfabetis menggunakan algoritma bubble sort pada linked list. Prosesnya adalah dengan menelusuri node satu per satu dan membandingkan judul buku pada node saat ini dengan node berikutnya menggunakan `strcmp`. Jika urutan salah, data pada kedua node ditukar. Proses ini diulang terus hingga tidak ada lagi data yang perlu ditukar (data sudah terurut). Penukaran dilakukan pada isi data node, bukan node-nya, agar struktur linked list tetap utuh. Dengan pengurutan ini, tampilan daftar buku menjadi lebih rapi dan memudahkan pencarian manual.
+Fungsi ini digunakan untuk mengurutkan data buku berdasarkan judul secara alfabetis menggunakan algoritma bubble sort pada linked list. Berikut penjelasan detail setiap langkahnya:
+
+- Algoritma bubble sort bekerja dengan membandingkan dua node yang bersebelahan, yaitu judul buku pada node saat ini dan node berikutnya menggunakan fungsi `strcmp`. Jika urutan judul salah (lebih besar secara alfabet), data pada kedua node ditukar.
+- Penukaran dilakukan pada isi data node (`Buku temp = p->data; ...`) bukan pada node-nya, sehingga struktur linked list tetap utuh dan tidak perlu mengubah pointer.
+- Proses ini diulang terus (loop do-while) hingga tidak ada lagi data yang perlu ditukar, artinya seluruh data sudah terurut.
+- Fungsi ini efisien untuk jumlah data yang tidak terlalu besar dan sangat mudah diimplementasikan pada linked list karena penukaran hanya pada data, bukan node.
+- Jika hanya ada satu node atau tidak ada data (`head == nullptr` atau `head->next == nullptr`), pengurutan langsung selesai.
+- Setelah proses selesai, program menampilkan pesan konfirmasi.
+
+Dengan cara ini, tampilan daftar buku menjadi lebih rapi dan memudahkan pencarian manual berdasarkan urutan judul.
 
 ### Fungsi Urutkan Buku Berdasarkan Harga
 
@@ -287,7 +359,87 @@ void urutkanBukuHarga()
 }
 ```
 
-Fungsi ini digunakan untuk mengurutkan data buku berdasarkan harga dari yang termurah ke yang termahal menggunakan algoritma bubble sort pada linked list. Prosesnya mirip dengan pengurutan judul, yaitu dengan menelusuri node satu per satu dan membandingkan harga buku pada node saat ini dengan node berikutnya. Jika urutan harga salah, data pada kedua node ditukar. Proses ini diulang hingga seluruh data buku terurut berdasarkan harga. Dengan pengurutan ini, pengguna dapat dengan mudah melihat daftar buku dari harga terendah hingga tertinggi.
+Fungsi ini digunakan untuk mengurutkan data buku berdasarkan harga dari yang termurah ke yang termahal menggunakan algoritma bubble sort pada linked list. Berikut penjelasan detail setiap langkahnya:
+
+- Algoritma bubble sort bekerja dengan membandingkan dua node yang bersebelahan, yaitu harga buku pada node saat ini dan node berikutnya. Jika harga pada node saat ini lebih besar, data pada kedua node ditukar.
+- Penukaran dilakukan pada isi data node (`Buku temp = p->data; ...`) bukan pada node-nya, sehingga struktur linked list tetap utuh dan tidak perlu mengubah pointer.
+- Proses ini diulang terus (loop do-while) hingga tidak ada lagi data yang perlu ditukar, artinya seluruh data sudah terurut dari harga terendah ke tertinggi.
+- Jika hanya ada satu node atau tidak ada data (`head == nullptr` atau `head->next == nullptr`), pengurutan langsung selesai.
+- Setelah proses selesai, program menampilkan pesan konfirmasi.
+
+Dengan pengurutan ini, pengguna dapat dengan mudah melihat daftar buku dari harga terendah hingga tertinggi, sehingga memudahkan pencarian manual atau analisis harga buku di toko.
+
+### Fungsi Utama Program
+
+```cpp
+int main()
+{
+  int pilihan;
+  do
+  {
+    cout << "\n=== Sistem Manajemen Toko Buku ===\n";
+    cout << "1. Tambah Buku\n";
+    cout << "2. Tampilkan Daftar Buku\n";
+    cout << "3. Ubah Data Buku\n";
+    cout << "4. Hapus Buku\n";
+    cout << "5. Cari Buku\n";
+    cout << "6. Urutkan Buku (Judul)\n";
+    cout << "7. Urutkan Buku (Harga)\n";
+    cout << "0. Keluar\n";
+    cout << "Pilih menu: ";
+    cin >> pilihan;
+    switch (pilihan)
+    {
+    case 1:
+      tambahBuku();
+      break;
+    case 2:
+      tampilkanBuku();
+      break;
+    case 3:
+      ubahBuku();
+      break;
+    case 4:
+      hapusBuku();
+      break;
+    case 5:
+      cariBuku();
+      break;
+    case 6:
+      urutkanBukuJudul();
+      break;
+    case 7:
+      urutkanBukuHarga();
+      break;
+    case 0:
+      cout << "Terima kasih!\n";
+      break;
+    default:
+      cout << "Menu tidak valid!\n";
+    }
+  } while (pilihan != 0);
+  return 0;
+}
+```
+
+Fungsi `main` adalah titik awal eksekusi program dan berfungsi sebagai pengendali utama alur aplikasi. Berikut penjelasan detail setiap bagian:
+
+- Program menampilkan menu interaktif di konsol, memungkinkan pengguna memilih fitur yang diinginkan dengan memasukkan angka sesuai menu.
+- Variabel `pilihan` digunakan untuk menyimpan input menu dari pengguna.
+- Struktur `do-while` memastikan menu akan terus ditampilkan dan program berjalan hingga pengguna memilih opsi keluar (`pilihan == 0`).
+- Setiap pilihan menu di-handle menggunakan struktur `switch-case`, sehingga setiap angka menu akan memanggil fungsi yang sesuai:
+  - 1: Menambah data buku baru
+  - 2: Menampilkan daftar buku
+  - 3: Mengubah data buku
+  - 4: Menghapus data buku
+  - 5: Mencari data buku
+  - 6: Mengurutkan buku berdasarkan judul
+  - 7: Mengurutkan buku berdasarkan harga
+  - 0: Keluar dari program
+- Jika input menu tidak valid, program menampilkan pesan "Menu tidak valid!" dan kembali ke menu utama.
+- Setelah memilih keluar, program menampilkan pesan "Terima kasih!" sebagai penutup.
+
+Dengan struktur ini, seluruh fitur manajemen toko buku dapat diakses dengan mudah dan terintegrasi dalam satu alur program utama, sehingga pengguna dapat melakukan berbagai operasi secara interaktif dan berulang tanpa perlu menjalankan ulang program.
 
 ## Penjelasan Konsep dan Fitur
 
