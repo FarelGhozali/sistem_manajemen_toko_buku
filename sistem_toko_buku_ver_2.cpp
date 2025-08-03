@@ -1,7 +1,7 @@
-#include <iostream>   // Library untuk input/output standar (cout, cin)
-#include <iomanip>    // Library untuk manipulasi format output (setw, setfill)
-#include <cstring>    // Library untuk operasi string C (strcmp, strstr, dll)
-using namespace std; // Agar bisa menggunakan fungsi-fungsi standar C++ tanpa menulis 'std::'
+#include <iostream>  
+#include <iomanip>   
+#include <cstring>   
+using namespace std; 
 
 // Struktur data buku
 struct Buku
@@ -20,7 +20,7 @@ struct Node
   Node *next;       
 };
 
-Node *head = nullptr; // Pointer ke node pertama (head) dari linked list
+Node *head = nullptr; 
 
 // Fungsi untuk menambah data buku baru ke dalam linked list
 void tambahBuku()
@@ -205,10 +205,10 @@ void cariBuku()
   }
 }
 
-// Fungsi pengurutan buku berdasarkan judul (bubble sort manual)
+// Fungsi pengurutan buku berdasarkan judul (bubble sort)
 void urutkanBukuJudul()
 {
-  // Bubble sort manual pada linked list
+  // Bubble sort pada linked list
   if (!head || !head->next)
   {
     cout << "Daftar buku berhasil diurutkan berdasarkan judul!\n";
@@ -235,10 +235,10 @@ void urutkanBukuJudul()
   cout << "Daftar buku berhasil diurutkan berdasarkan judul!\n";
 }
 
-// Fungsi pengurutan buku berdasarkan harga (bubble sort manual)
+// Fungsi pengurutan buku berdasarkan harga (bubble sort)
 void urutkanBukuHarga()
 {
-  // Bubble sort manual pada linked list
+  // Bubble sort pada linked list
   if (!head || !head->next)
   {
     cout << "Daftar buku berhasil diurutkan berdasarkan harga!\n";
@@ -264,7 +264,6 @@ void urutkanBukuHarga()
   } while (swapped);
   cout << "Daftar buku berhasil diurutkan berdasarkan harga!\n";
 }
-
 
 int main()
 {
