@@ -1,33 +1,28 @@
-// Sistem Manajemen Toko Buku - Console
-// Library tambahan untuk formatting
-#include <iostream>
-#include <iomanip>
-#include <cstring>
-using namespace std;
+#include <iostream>   // Library untuk input/output standar (cout, cin)
+#include <iomanip>    // Library untuk manipulasi format output (setw, setfill)
+#include <cstring>    // Library untuk operasi string C (strcmp, strstr, dll)
+using namespace std; // Agar bisa menggunakan fungsi-fungsi standar C++ tanpa menulis 'std::'
 
 // Struktur data buku
-// Menyimpan informasi tentang sebuah buku
 struct Buku
 {
-  char kode[10];     // Kode unik buku
-  char judul[50];    // Judul buku
-  char penulis[30];  // Nama penulis
-  int harga;         // Harga buku
-  int stok;          // Jumlah stok buku
+  char kode[10];     
+  char judul[50];    
+  char penulis[30];  
+  int harga;         
+  int stok;          
 };
 
 // Node untuk linked list
-// Setiap node berisi data buku dan pointer ke node berikutnya
 struct Node
 {
-  Buku data;         // Data buku
-  Node *next;        // Pointer ke node berikutnya
+  Buku data;        
+  Node *next;       
 };
 
 Node *head = nullptr; // Pointer ke node pertama (head) dari linked list
 
 // Fungsi untuk menambah data buku baru ke dalam linked list
-// Input data dari user, lalu node baru ditambahkan di akhir list
 void tambahBuku()
 {
   Node *baru = new Node; // Membuat node baru
@@ -270,7 +265,7 @@ void urutkanBukuHarga()
   cout << "Daftar buku berhasil diurutkan berdasarkan harga!\n";
 }
 
-// Fungsi utama program
+
 int main()
 {
   int pilihan;
@@ -288,35 +283,35 @@ int main()
     cout << "0. Keluar\n";
     cout << "Pilih menu: ";
     cin >> pilihan;
-    // Proses pilihan menu
+
     switch (pilihan)
     {
     case 1:
-      tambahBuku(); // Menambah buku baru
+      tambahBuku(); 
       break;
     case 2:
-      tampilkanBuku(); // Menampilkan daftar buku
+      tampilkanBuku(); 
       break;
     case 3:
-      ubahBuku(); // Mengubah data buku
+      ubahBuku(); 
       break;
     case 4:
-      hapusBuku(); // Menghapus buku
+      hapusBuku(); 
       break;
     case 5:
-      cariBuku(); // Mencari buku
+      cariBuku(); 
       break;
     case 6:
-      urutkanBukuJudul(); // Mengurutkan buku berdasarkan judul
+      urutkanBukuJudul(); 
       break;
     case 7:
-      urutkanBukuHarga(); // Mengurutkan buku berdasarkan harga
+      urutkanBukuHarga(); 
       break;
     case 0:
-      cout << "Terima kasih!\n"; // Keluar dari program
+      cout << "Terima kasih!\n"; 
       break;
     default:
-      cout << "Menu tidak valid!\n"; // Jika input menu salah
+      cout << "Menu tidak valid!\n"; 
     }
   } while (pilihan != 0); // Loop sampai user memilih keluar
   return 0;
