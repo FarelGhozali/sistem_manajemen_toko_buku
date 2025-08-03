@@ -6,59 +6,62 @@
 using namespace std;
 
 // Struktur data buku
+// Menyimpan informasi tentang sebuah buku
 struct Buku
 {
-  char kode[10];
-  char judul[50];
-  char penulis[30];
-  int harga;
-  int stok;
+  char kode[10];     // Kode unik buku
+  char judul[50];    // Judul buku
+  char penulis[30];  // Nama penulis
+  int harga;         // Harga buku
+  int stok;          // Jumlah stok buku
 };
 
 // Node untuk linked list
+// Setiap node berisi data buku dan pointer ke node berikutnya
 struct Node
 {
-  Buku data;
-  Node *next;
+  Buku data;         // Data buku
+  Node *next;        // Pointer ke node berikutnya
 };
 
-Node *head = nullptr;
+Node *head = nullptr; // Pointer ke node pertama (head) dari linked list
 
-// Fungsi untuk menambah data buku
-// Menggunakan pointer ke array dan pointer ke jumlah buku
+// Fungsi untuk menambah data buku baru ke dalam linked list
+// Input data dari user, lalu node baru ditambahkan di akhir list
 void tambahBuku()
 {
-  Node *baru = new Node;
+  Node *baru = new Node; // Membuat node baru
   cout << "\nMasukkan kode buku: ";
   cin >> baru->data.kode;
   cout << "Masukkan judul buku: ";
   cin.ignore();
-  cin.getline(baru->data.judul, 50);
+  cin.getline(baru->data.judul, 50); // Input judul buku
   cout << "Masukkan penulis: ";
-  cin.getline(baru->data.penulis, 30);
+  cin.getline(baru->data.penulis, 30); // Input penulis
   cout << "Masukkan harga: ";
-  cin >> baru->data.harga;
+  cin >> baru->data.harga; // Input harga
   cout << "Masukkan stok: ";
-  cin >> baru->data.stok;
-  baru->next = nullptr;
+  cin >> baru->data.stok; // Input stok
+  baru->next = nullptr; // Node baru belum terhubung ke node lain
   if (!head)
   {
-    head = baru;
+    head = baru; // Jika list kosong, node baru jadi head
   }
   else
   {
     Node *p = head;
     while (p->next)
-      p = p->next;
-    p->next = baru;
+      p = p->next; // Cari node terakhir
+    p->next = baru; // Tambahkan node baru di akhir
   }
-  cout << "\nBuku berhasil ditambahkan!\n";
+  cout << "\nBuku berhasil ditambahkan!\n"; // Konfirmasi
 }
 
-// Fungsi untuk menampilkan daftar buku
+// Fungsi untuk menampilkan daftar buku yang ada di linked list
 void tampilkanBuku()
 {
   cout << "\nDaftar Buku:\n";
+  // Membuat header tabel
   cout << setfill('-') << setw(85) << "" << setfill(' ') << endl;
   cout << left
        << setw(4) << "No"
@@ -70,6 +73,7 @@ void tampilkanBuku()
   cout << setfill('-') << setw(85) << "" << setfill(' ') << endl;
   int no = 1;
   Node *p = head;
+  // Menampilkan data setiap buku
   while (p)
   {
     cout << left
@@ -84,19 +88,22 @@ void tampilkanBuku()
   cout << setfill('-') << setw(85) << "" << setfill(' ') << endl;
 }
 
-// Fungsi untuk mengubah data buku
+// Fungsi untuk mengubah data buku berdasarkan kode
 void ubahBuku()
 {
   char kodeCari[10];
   cout << "\nMasukkan kode buku yang ingin diubah: ";
   cin >> kodeCari;
   Node *p = head;
+  // Mencari buku dengan kode yang sesuai
   while (p)
   {
     if (strcmp(p->data.kode, kodeCari) == 0)
     {
+      // Menampilkan data lama
       cout << "Data lama:\n";
       cout << "Judul: " << p->data.judul << "\nPenulis: " << p->data.penulis << "\nHarga: " << p->data.harga << "\nStok: " << p->data.stok << endl;
+      // Input data baru
       cout << "Masukkan data baru:\n";
       cout << "Judul: ";
       cin.ignore();
@@ -112,20 +119,23 @@ void ubahBuku()
     }
     p = p->next;
   }
+  // Jika kode tidak ditemukan
   cout << "Buku dengan kode tersebut tidak ditemukan!\n";
 }
 
-// Fungsi untuk menghapus data buku
+// Fungsi untuk menghapus data buku berdasarkan kode
 void hapusBuku()
 {
   char kodeCari[10];
   cout << "\nMasukkan kode buku yang ingin dihapus: ";
   cin >> kodeCari;
   Node *p = head, *prev = nullptr;
+  // Mencari node yang akan dihapus
   while (p)
   {
     if (strcmp(p->data.kode, kodeCari) == 0)
     {
+      // Jika node yang dihapus adalah head
       if (prev == nullptr)
       {
         head = p->next;
@@ -134,13 +144,14 @@ void hapusBuku()
       {
         prev->next = p->next;
       }
-      delete p;
+      delete p; // Hapus node dari memori
       cout << "Buku berhasil dihapus!\n";
       return;
     }
     prev = p;
     p = p->next;
   }
+  // Jika kode tidak ditemukan
   cout << "Buku dengan kode tersebut tidak ditemukan!\n";
 }
 
@@ -153,6 +164,7 @@ void cariBuku()
   cin.ignore();
   if (mode == 1)
   {
+    // Pencarian berdasarkan judul
     char judulCari[50];
     cout << "Masukkan judul buku: ";
     cin.getline(judulCari, 50);
@@ -160,6 +172,7 @@ void cariBuku()
     Node *p = head;
     while (p)
     {
+      // Jika judul mengandung kata kunci
       if (strstr(p->data.judul, judulCari))
       {
         cout << "Kode: " << p->data.kode << ", Judul: " << p->data.judul << ", Penulis: " << p->data.penulis << ", Harga: " << p->data.harga << ", Stok: " << p->data.stok << endl;
@@ -172,6 +185,7 @@ void cariBuku()
   }
   else if (mode == 2)
   {
+    // Pencarian berdasarkan kode
     char kodeCari[10];
     cout << "Masukkan kode buku: ";
     cin.getline(kodeCari, 10);
@@ -191,6 +205,7 @@ void cariBuku()
   }
   else
   {
+    // Jika pilihan mode tidak valid
     cout << "Pilihan tidak valid!\n";
   }
 }
@@ -211,6 +226,7 @@ void urutkanBukuJudul()
     Node *p = head;
     while (p->next)
     {
+      // Jika urutan judul salah, tukar data
       if (strcmp(p->data.judul, p->next->data.judul) > 0)
       {
         Buku temp = p->data;
@@ -240,6 +256,7 @@ void urutkanBukuHarga()
     Node *p = head;
     while (p->next)
     {
+      // Jika harga buku lebih besar dari berikutnya, tukar data
       if (p->data.harga > p->next->data.harga)
       {
         Buku temp = p->data;
@@ -253,11 +270,13 @@ void urutkanBukuHarga()
   cout << "Daftar buku berhasil diurutkan berdasarkan harga!\n";
 }
 
+// Fungsi utama program
 int main()
 {
   int pilihan;
   do
   {
+    // Menampilkan menu utama
     cout << "\n=== Sistem Manajemen Toko Buku ===\n";
     cout << "1. Tambah Buku\n";
     cout << "2. Tampilkan Daftar Buku\n";
@@ -269,35 +288,36 @@ int main()
     cout << "0. Keluar\n";
     cout << "Pilih menu: ";
     cin >> pilihan;
+    // Proses pilihan menu
     switch (pilihan)
     {
     case 1:
-      tambahBuku();
+      tambahBuku(); // Menambah buku baru
       break;
     case 2:
-      tampilkanBuku();
+      tampilkanBuku(); // Menampilkan daftar buku
       break;
     case 3:
-      ubahBuku();
+      ubahBuku(); // Mengubah data buku
       break;
     case 4:
-      hapusBuku();
+      hapusBuku(); // Menghapus buku
       break;
     case 5:
-      cariBuku();
+      cariBuku(); // Mencari buku
       break;
     case 6:
-      urutkanBukuJudul();
+      urutkanBukuJudul(); // Mengurutkan buku berdasarkan judul
       break;
     case 7:
-      urutkanBukuHarga();
+      urutkanBukuHarga(); // Mengurutkan buku berdasarkan harga
       break;
     case 0:
-      cout << "Terima kasih!\n";
+      cout << "Terima kasih!\n"; // Keluar dari program
       break;
     default:
-      cout << "Menu tidak valid!\n";
+      cout << "Menu tidak valid!\n"; // Jika input menu salah
     }
-  } while (pilihan != 0);
+  } while (pilihan != 0); // Loop sampai user memilih keluar
   return 0;
 }
